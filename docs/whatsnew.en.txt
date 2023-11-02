@@ -15,6 +15,7 @@ libs:
 + lib/include/core.f - add "BUFFER:"
 + lib/include/facil.f - add MS
 + lib/include/quotations.f - the words "[:" and ";]"
++ lib/include/wordlist-tools.f - "FIND-NAME-IN" "FIND-NAME"
 
 
 27 March 2023     Version 4.29
