@@ -8,7 +8,7 @@ WINAPI: WideCharToMultiByte     kernel32.dll
 \ https://docs.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
 
 
-: ANSI>UTF16 ( d-txt1 d-buf1 -- d-buf2 ) \ AKA Wide char
+: ANSI>UTF16 ( sd.text-ansi sd.buf -- sd.text-utf16 ) \ AKA Wide char
   OVER >R
   1 RSHIFT SWAP 2SWAP SWAP
   OVER 0= IF 2DROP 2DROP R> 0 EXIT THEN
@@ -17,7 +17,7 @@ WINAPI: WideCharToMultiByte     kernel32.dll
   2* R> SWAP
 ;
 
-: UTF16>ANSI ( d-txt1 d-buf1 -- d-buf2 )
+: UTF16>ANSI ( sd.text-utf16 sd.buf -- sd.text-ansi )
   2>R 0 0 2SWAP
   1 RSHIFT SWAP R> R@ 2SWAP
   OVER 0= IF 2DROP 2DROP R> 0 EXIT THEN
@@ -33,7 +33,7 @@ WINAPI: WideCharToMultiByte     kernel32.dll
 
 
 
-: UTF8>UTF16 ( d-txt1 d-buf1 -- d-buf2 ) \ AKA Wide char
+: UTF8>UTF16 ( sd.text-utf8 sd.buf -- sd.text-utf16 ) \ AKA Wide char
   OVER >R
   1 RSHIFT SWAP 2SWAP SWAP
   OVER 0= IF 2DROP 2DROP R> 0 EXIT THEN
@@ -42,7 +42,7 @@ WINAPI: WideCharToMultiByte     kernel32.dll
   2* R> SWAP
 ;
 
-: UTF16>UTF8 ( d-txt1 d-buf1 -- d-buf2 )
+: UTF16>UTF8 ( sd.text-utf16 sd.buf -- sd.text-utf8 )
   2>R 0 0 2SWAP
   1 RSHIFT SWAP R> R@ 2SWAP
   OVER 0= IF 2DROP 2DROP R> 0 EXIT THEN
