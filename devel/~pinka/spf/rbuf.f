@@ -35,6 +35,15 @@
   2DUP 2>R MOVE 2R> 2DUP + 0 SWAP C!
 ;
 
+
+: MOD-MEMORY-PAGESIZE ( u1 -- u2 )
+  [ MEMORY-PAGESIZE DUP NEGATE SWAP 1- OR -1 = ] [IF] \ it's a pow of two
+    [ MEMORY-PAGESIZE 1- ] LITERAL  AND
+  [ELSE]
+    MEMORY-PAGESIZE UMOD
+  [THEN]
+;
+
 : ENSURE-ASCIIZ-R ( addr u -- addr2 u ) ( R: -- i*x nest-sys )
 \ Only for compilation.
 \ Если addr есть 0, то возвращается ( addr u ) без изменений;
@@ -43,7 +52,12 @@
 \ которая автоматически освобождается при выходе из слова,
 \ в котором вызвано ENSURE-ASCIIZ-R
   OVER 0= IF EXIT THEN
-  2DUP + C@ 0= IF EXIT THEN
+  2DUP +  DUP MOD-MEMORY-PAGESIZE IF
+    \ NB: the next character after the string is only read
+    \ if its address is not the address of the next memory page,
+    \ to avoid a possible access violation error.
+    C@ 0= IF EXIT THEN
+  THEN
   R> -ROT RCARBON ROT >R
 ;
 
